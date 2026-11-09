@@ -95,6 +95,9 @@ public class OrderController implements Initializable {
     @FXML
     private ToggleGroup drinks;
     
+    Order order = new Order();
+    String[] orders = {"", "", "", ""};
+    
     @FXML 
     private void placeOrder(ActionEvent event) {
         
@@ -127,7 +130,7 @@ public class OrderController implements Initializable {
     
     @FXML
     private void clearSpecialRequests(ActionEvent event) {
-        specialRequestsText.setText("");
+        specialRequestsText.setText("");      
     }
     
     @FXML
@@ -138,9 +141,7 @@ public class OrderController implements Initializable {
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        Order order = new Order();
-        
+    public void initialize(URL url, ResourceBundle rb) {     
         entrees.getItems().addAll("Chicken Salad", "Turkey Sandwich", "Vegetable Wrap", "Grilled Cheese");
           
         coffeeBtn.setToggleGroup(drinks);
@@ -154,19 +155,52 @@ public class OrderController implements Initializable {
         juiceBtn.setUserData("Juice");
         
         entrees.getSelectionModel().selectedItemProperty().addListener((cl, oldSelected, newSelected) -> {
-            order.setEntree(entrees.getSelectionModel().getSelectedItem());
+            if (entrees.getSelectionModel().getSelectedItem() == null) {
+                order.setEntree("");
+                orders[0] = "";
+            } else {
+                order.setEntree(entrees.getSelectionModel().getSelectedItem());
+                orders[0] = order.getEntree() + ", ";
+            }
+            String currentOrderText = "Current Order: " + orders[0] + orders[1] + orders[2] + orders[3];
+            currentOrderLabel.setText(currentOrderText.substring(0, currentOrderText.length() - 2));
             totalCostLabel.setText("Total Cost: $" + order.getCost());
         });
         
         drinks.selectedToggleProperty().addListener((cl, oldSelected, newSelected) -> {
-            order.setDrink(drinks.getSelectedToggle().getUserData().toString());
+            if (drinks.getSelectedToggle() == null) {
+                order.setDrink("");
+                orders[1] = "";
+            } else {
+                order.setDrink(drinks.getSelectedToggle().getUserData().toString());
+                orders[1] = order.getDrink() + ", ";
+            }
+            String currentOrderText = "Current Order: " + orders[0] + orders[1] + orders[2] + orders[3];
+            currentOrderLabel.setText(currentOrderText.substring(0, currentOrderText.length() - 2));
             totalCostLabel.setText("Total Cost: $" + order.getCost());
         });
         
         requestFreeWater.selectedProperty().addListener((cl) -> {
             order.setWater(requestFreeWater.isSelected());
+            if (order.getWater() == true) {
+                orders[2] = "water requested, ";
+            } else {
+                orders[2] = "";
+            }
+            String currentOrderText = "Current Order: " + orders[0] + orders[1] + orders[2] + orders[3];
+            currentOrderLabel.setText(currentOrderText.substring(0, currentOrderText.length() - 2));
         });
         
-    }    
-    
+        specialRequestsText.textProperty().addListener(cl -> {
+            order.setSpecialRequest(specialRequestsText.getText());
+            if (specialRequestsText.getText().equals("")) {
+                orders[3] = "";
+            } else {
+                orders[3] = order.getSpecialRequest() + ", ";
+            }
+            String currentOrderText = "Current Order: " + orders[0] + orders[1] + orders[2] + orders[3];
+            currentOrderLabel.setText(currentOrderText.substring(0, currentOrderText.length() - 2));
+            totalCostLabel.setText("Total Cost: $" + order.getCost());
+        });            
+    }     
 }

@@ -18,6 +18,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         scene = new Scene(loadFXML("order"), 640, 480);
+        stage.setTitle("Restauraunt Ordering Application");
         stage.setScene(scene);
         stage.show();
     }
