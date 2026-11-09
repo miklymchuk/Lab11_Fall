@@ -139,6 +139,8 @@ public class OrderController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        Order order = new Order();
+        
         entrees.getItems().addAll("Chicken Salad", "Turkey Sandwich", "Vegetable Wrap", "Grilled Cheese");
           
         coffeeBtn.setToggleGroup(drinks);
@@ -146,13 +148,25 @@ public class OrderController implements Initializable {
         sodaBtn.setToggleGroup(drinks);
         juiceBtn.setToggleGroup(drinks);
         
-        double cost = 0;
+        coffeeBtn.setUserData("Coffee");
+        teaBtn.setUserData("Tea");
+        sodaBtn.setUserData("Soda");
+        juiceBtn.setUserData("Juice");
         
-        entrees.selectionModelProperty().addListener((cl, oldSelected, newSelected) -> {
-            if (entrees.getSelectionModel().getSelectedItem().equals("Chicken Salad")) {
-                
-            }
+        entrees.getSelectionModel().selectedItemProperty().addListener((cl, oldSelected, newSelected) -> {
+            order.setEntree(entrees.getSelectionModel().getSelectedItem());
+            totalCostLabel.setText("Total Cost: $" + order.getCost());
         });
+        
+        drinks.selectedToggleProperty().addListener((cl, oldSelected, newSelected) -> {
+            order.setDrink(drinks.getSelectedToggle().getUserData().toString());
+            totalCostLabel.setText("Total Cost: $" + order.getCost());
+        });
+        
+        requestFreeWater.selectedProperty().addListener((cl) -> {
+            order.setWater(requestFreeWater.isSelected());
+        });
+        
     }    
     
 }
