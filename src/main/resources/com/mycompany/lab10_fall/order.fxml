@@ -9,6 +9,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -19,21 +20,21 @@
         <menus>
           <Menu fx:id="fileMenu" mnemonicParsing="false" text="File">
             <items>
-              <MenuItem fx:id="placeOrderItem" mnemonicParsing="false" text="Place Order" />
-                  <MenuItem fx:id="clearOrderItem" mnemonicParsing="false" text="Clear Order" />
-                  <MenuItem fx:id="exitItem" mnemonicParsing="false" text="Exit" />
+              <MenuItem fx:id="placeOrderItem" mnemonicParsing="false" onAction="#placeOrder" text="Place Order" />
+                  <MenuItem fx:id="clearOrderItem" mnemonicParsing="false" onAction="#clearOrder" text="Clear Order" />
+                  <MenuItem fx:id="exitItem" mnemonicParsing="false" onAction="#exit" text="Exit" />
             </items>
           </Menu>
           <Menu fx:id="editMenu" mnemonicParsing="false" text="Edit">
             <items>
-                  <MenuItem fx:id="clearEntreeItem" mnemonicParsing="false" text="Clear Entrée" />
-              <MenuItem fx:id="clearDrinkItem" mnemonicParsing="false" text="Clear Drink" />
-                  <MenuItem fx:id="clearSpecialRequestsItem" mnemonicParsing="false" text="Clear Special Requests" />
+                  <MenuItem fx:id="clearEntreeItem" mnemonicParsing="false" onAction="#clearEntree" text="Clear Entrée" />
+              <MenuItem fx:id="clearDrinkItem" mnemonicParsing="false" onAction="#clearDrink" text="Clear Drink" />
+                  <MenuItem fx:id="clearSpecialRequestsItem" mnemonicParsing="false" onAction="#clearSpecialRequests" text="Clear Special Requests" />
             </items>
           </Menu>
           <Menu fx:id="helpMenu" mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem fx:id="aboutItem" mnemonicParsing="false" text="About" />
+              <MenuItem fx:id="aboutItem" mnemonicParsing="false" onAction="#displayAbout" text="About" />
             </items>
           </Menu>
         </menus>
@@ -46,10 +47,14 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <RadioButton fx:id="coffeeBtn" mnemonicParsing="false" text="Coffee" />
-            <RadioButton fx:id="teaBtn" mnemonicParsing="false" text="Tea" />
-            <RadioButton fx:id="sodaBtn" mnemonicParsing="false" text="Soda" />
-            <RadioButton fx:id="juiceBtn" mnemonicParsing="false" text="Juice" />
+            <RadioButton fx:id="coffeeBtn" mnemonicParsing="false" text="Coffee">
+               <toggleGroup>
+                  <ToggleGroup fx:id="drinks" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="teaBtn" mnemonicParsing="false" text="Tea" toggleGroup="$drinks" />
+            <RadioButton fx:id="sodaBtn" mnemonicParsing="false" text="Soda" toggleGroup="$drinks" />
+            <RadioButton fx:id="juiceBtn" mnemonicParsing="false" text="Juice" toggleGroup="$drinks" />
          </children>
       </VBox>
       <Label fx:id="currentOrderLabel" layoutX="15.0" layoutY="323.0" text="Current Order:">
@@ -57,12 +62,12 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <Button fx:id="clearOrderBtn" layoutX="453.0" layoutY="335.0" mnemonicParsing="false" text="Clear Order">
+      <Button fx:id="clearOrderBtn" layoutX="453.0" layoutY="335.0" mnemonicParsing="false" onAction="#clearOrder" text="Clear Order">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="placeOrderBtn" layoutX="300.0" layoutY="335.0" mnemonicParsing="false" text="Place Order">
+      <Button fx:id="placeOrderBtn" layoutX="300.0" layoutY="335.0" mnemonicParsing="false" onAction="#placeOrder" text="Place Order">
          <font>
             <Font size="18.0" />
          </font>

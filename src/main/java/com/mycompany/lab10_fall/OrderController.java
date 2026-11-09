@@ -6,6 +6,7 @@ package com.mycompany.lab10_fall;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
@@ -18,6 +19,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -90,12 +92,67 @@ public class OrderController implements Initializable {
     private Button clearOrderBtn;
     @FXML
     private Label entreeSelectionLabel;
+    @FXML
+    private ToggleGroup drinks;
+    
+    @FXML 
+    private void placeOrder(ActionEvent event) {
+        
+    }
+    
+    @FXML
+    private void clearOrder(ActionEvent event) {
+        clearEntree(event);
+        clearDrink(event);
+        requestFreeWater.setSelected(false);
+        clearSpecialRequests(event);
+        currentOrderLabel.setText("Current Order:");
+        totalCostLabel.setText("Total Cost: $0.00");
+    }
+    
+    @FXML
+    private void exit(ActionEvent event) {
+        System.exit(0);
+    }
+    
+    @FXML
+    private void clearEntree(ActionEvent event) {
+        entrees.getSelectionModel().clearSelection();
+    }
+    
+    @FXML
+    private void clearDrink(ActionEvent event) {       
+        drinks.getToggles().clear();
+    }
+    
+    @FXML
+    private void clearSpecialRequests(ActionEvent event) {
+        specialRequestsText.setText("");
+    }
+    
+    @FXML
+    private void displayAbout(ActionEvent event) {
+    
+    }
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         entrees.getItems().addAll("Chicken Salad", "Turkey Sandwich", "Vegetable Wrap", "Grilled Cheese");
+          
+        coffeeBtn.setToggleGroup(drinks);
+        teaBtn.setToggleGroup(drinks);
+        sodaBtn.setToggleGroup(drinks);
+        juiceBtn.setToggleGroup(drinks);
+        
+        double cost = 0;
+        
+        entrees.selectionModelProperty().addListener((cl, oldSelected, newSelected) -> {
+            if (entrees.getSelectionModel().getSelectedItem().equals("Chicken Salad")) {
+                
+            }
+        });
     }    
     
 }
