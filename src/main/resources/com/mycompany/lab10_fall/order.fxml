@@ -85,5 +85,6 @@
             <Font size="18.0" />
          </font>
       </Label>
+      <Label fx:id="verificationLabel" layoutX="306.0" layoutY="343.0" prefHeight="27.0" prefWidth="256.0" textFill="RED" />
    </children>
 </Pane>

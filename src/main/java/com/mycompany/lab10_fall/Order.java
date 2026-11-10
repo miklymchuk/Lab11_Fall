@@ -4,6 +4,11 @@
  */
 package com.mycompany.lab10_fall;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
 /**
  *
  * @author 6312398
@@ -11,7 +16,7 @@ package com.mycompany.lab10_fall;
 public class Order {
     public static final double CHICKEN_SALAD_PRICE = 6.50;
     public static final double TURKEY_SANDWICH_PRICE = 6.75;
-    public static final double VENEGTABLE_WRAP_PRICE = 6.00;
+    public static final double VEGETABLE_WRAP_PRICE = 6.00;
     public static final double GRILLED_CHEESE_PRICE = 5.00;
     
     public static final double COFFEE_PRICE = 1.50;
@@ -25,7 +30,7 @@ public class Order {
     public String specialRequest = "";
     
     public Order() {
-    
+        
     }
 
     public String getEntree() {
@@ -46,6 +51,13 @@ public class Order {
 
     public Boolean getWater() {
         return water;
+    }
+   
+    public String getWaterToString() {
+        if (water == false) {
+            return "No";
+        }
+        return "Yes";
     }
 
     public void setWater(Boolean water) {
@@ -71,21 +83,35 @@ public class Order {
         double cost = 0;
         
         switch(entree) {
-            case "Chicken Salad": cost+= 6.50; break;
-            case "Turkey Sandwich": cost+= 6.75; break;
-            case "Vegetable Wrap": cost+= 6.00; break;
-            case "Grilled Cheese": cost+= 5.00; break;
+            case "Chicken Salad": cost+= CHICKEN_SALAD_PRICE; break;
+            case "Turkey Sandwich": cost+= TURKEY_SANDWICH_PRICE; break;
+            case "Vegetable Wrap": cost+= VEGETABLE_WRAP_PRICE; break;
+            case "Grilled Cheese": cost+= GRILLED_CHEESE_PRICE; break;
             default:
         }
         
         switch(drink) {
-            case "Coffee": cost+= 1.50; break;
-            case "Tea": cost+= 1.50; break;
-            case "Soda": cost+= 2.00; break;
-            case "Juice": cost+= 1.75; break;
+            case "Coffee": cost+= COFFEE_PRICE; break;
+            case "Tea": cost+= TEA_PRICE; break;
+            case "Soda": cost+= SODA_PRICE; break;
+            case "Juice": cost+= JUICE_PRICE; break;
             default:
         }
         
         return cost;
+    }
+    
+    public double getCost(String item) {
+        switch(item) {
+            case "Chicken Salad": return CHICKEN_SALAD_PRICE;
+            case "Turkey Sandwich": return TURKEY_SANDWICH_PRICE; 
+            case "Vegetable Wrap": return VEGETABLE_WRAP_PRICE; 
+            case "Grilled Cheese": return GRILLED_CHEESE_PRICE; 
+            case "Coffee": return COFFEE_PRICE; 
+            case "Tea": return TEA_PRICE; 
+            case "Soda": return SODA_PRICE; 
+            case "Juice": return JUICE_PRICE; 
+            default: return 0;
+        }
     }
 }

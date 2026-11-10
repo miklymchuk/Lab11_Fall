@@ -4,11 +4,17 @@
  */
 package com.mycompany.lab10_fall;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -24,6 +30,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 /**
  * FXML Controller class
  *
@@ -93,14 +100,49 @@ public class OrderController implements Initializable {
     @FXML
     private Label entreeSelectionLabel;
     @FXML
+    private Label verificationLabel;
+    @FXML
     private ToggleGroup drinks;
     
     Order order = new Order();
     String[] orders = {"", "", "", ""};
     
+    private static Parent loadFXML(String fxml) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        return fxmlLoader.load();
+    }
+    
     @FXML 
-    private void placeOrder(ActionEvent event) {
+    private void placeOrder(ActionEvent event) throws IOException {       
+        if (order.getEntree().equals("") || order.getDrink().equals("")) {
+            verificationLabel.setText("You did not choose an entrée and a drink yet");
+            return;
+        }
         
+        verificationLabel.setText("");
+        
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("orderSummary.fxml"));
+            
+            Parent root = fxmlLoader.load();
+            
+            Stage orderSummaryStage = new Stage();
+            
+            Scene orderSummaryScene = new Scene(root, 600, 800);
+            
+            orderSummaryStage.setScene(orderSummaryScene);          
+            orderSummaryStage.show();  
+            
+            OrderSummaryController orderSummaryController = fxmlLoader.getController();
+            
+            orderSummaryController.setEntree(order.getEntree(), order.getCost(order.getEntree()));
+            orderSummaryController.setDrink(order.getDrink(), order.getCost(order.getDrink()));
+            orderSummaryController.setWater(order.getWaterToString());
+            orderSummaryController.setSpecialRequests(order.getSpecialRequest());
+            orderSummaryController.setTotalCost(order.getCost());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }           
     }
     
     @FXML
@@ -116,6 +158,7 @@ public class OrderController implements Initializable {
     @FXML
     private void exit(ActionEvent event) {
         System.exit(0);
+        
     }
     
     @FXML
@@ -125,7 +168,7 @@ public class OrderController implements Initializable {
     
     @FXML
     private void clearDrink(ActionEvent event) {       
-        drinks.getToggles().clear();
+        drinks.selectToggle(null);
     }
     
     @FXML
@@ -135,11 +178,15 @@ public class OrderController implements Initializable {
     
     @FXML
     private void displayAbout(ActionEvent event) {
-    
+        Alert information = new Alert(AlertType.NONE);
+        information.setTitle("Application Information");
+        information.setContentText("Application Name: Resteraunt Order Application\nVersion: 1.0\nDeveloper Information: Developed by Michael Klymchuk");
+        information.show();
     }
     /**
      * Initializes the controller class.
      */
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {     
         entrees.getItems().addAll("Chicken Salad", "Turkey Sandwich", "Vegetable Wrap", "Grilled Cheese");
@@ -163,8 +210,9 @@ public class OrderController implements Initializable {
                 orders[0] = order.getEntree() + ", ";
             }
             String currentOrderText = "Current Order: " + orders[0] + orders[1] + orders[2] + orders[3];
-            currentOrderLabel.setText(currentOrderText.substring(0, currentOrderText.length() - 2));
-            totalCostLabel.setText("Total Cost: $" + order.getCost());
+            currentOrderLabel.setText(currentOrderText.substring(0, currentOrderText.length() - 2));       
+            String orderText = String.format("%.2f", order.getCost());
+            totalCostLabel.setText("Total Cost: $" + orderText);
         });
         
         drinks.selectedToggleProperty().addListener((cl, oldSelected, newSelected) -> {
@@ -177,7 +225,8 @@ public class OrderController implements Initializable {
             }
             String currentOrderText = "Current Order: " + orders[0] + orders[1] + orders[2] + orders[3];
             currentOrderLabel.setText(currentOrderText.substring(0, currentOrderText.length() - 2));
-            totalCostLabel.setText("Total Cost: $" + order.getCost());
+            String orderText = String.format("%.2f", order.getCost());
+            totalCostLabel.setText("Total Cost: $" + orderText);
         });
         
         requestFreeWater.selectedProperty().addListener((cl) -> {
@@ -200,7 +249,6 @@ public class OrderController implements Initializable {
             }
             String currentOrderText = "Current Order: " + orders[0] + orders[1] + orders[2] + orders[3];
             currentOrderLabel.setText(currentOrderText.substring(0, currentOrderText.length() - 2));
-            totalCostLabel.setText("Total Cost: $" + order.getCost());
         });            
     }     
 }
