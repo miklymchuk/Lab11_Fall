@@ -53,6 +53,9 @@ public class Order {
         return water;
     }
    
+    /**
+        Gets a string version of the Boolean getWater(), which is useful when displaying the order summary.
+    **/
     public String getWaterToString() {
         if (water == false) {
             return "No";
@@ -79,6 +82,9 @@ public class Order {
         this.specialRequest = specialRequest;
     }
     
+    /**
+        Gets the cost of both the entree and the drink.
+    **/
     public double getCost() {
         double cost = 0;
         
@@ -101,6 +107,11 @@ public class Order {
         return cost;
     }
     
+    
+    /**
+        @String item
+        Gets the cost of an individual entree or drink.
+    **/
     public double getCost(String item) {
         switch(item) {
             case "Chicken Salad": return CHICKEN_SALAD_PRICE;
